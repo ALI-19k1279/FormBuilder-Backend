@@ -1,0 +1,5 @@
+build/
+*.env*
+ormconfig.*
+Dockerfile.*
+node_modules

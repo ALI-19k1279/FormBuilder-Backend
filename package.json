@@ -1,0 +1,27 @@
+{
+  "devDependencies": {
+    "@types/mysql": "^2.15.21",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^5.0.0",
+    "tsc": "^2.0.4",
+    "tsc-watch": "^6.0.4"
+  },
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "reflect-metadata": "^0.1.13",
+    "apollo-server-express": "^3.10.2",
+    "typedi": "^0.8.0",
+    "typeorm": "^0.2.37",
+    "type-graphql": "^1.1.1",
+    "typeorm-typedi-extensions": "^0.2.3",
+    "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf dist/*",
+    "tsc": "tsc",
+    "dev": "npm-run-all build watch",
+    "build": "npm-run-all clean tsc",
+    "watch": "tsc-watch --onSuccess \"node dist/index\" --onFailure \"echo Beep! Compilation Failed\" --compiler typescript/bin/tsc"
+  }
+}
