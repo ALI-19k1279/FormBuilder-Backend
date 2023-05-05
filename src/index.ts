@@ -4,7 +4,7 @@ import { createServer } from "http";
 import { ApolloServer, AuthenticationError } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import express from "express";
-import { HelloResolver } from "./resolvers/Temp";
+import { FormBuilderResolver } from "./resolvers/FormBuilderResolver";
 import { ApolloServerPluginLandingPageGraphQLPlayground ,ApolloServerPluginDrainHttpServer} from "apollo-server-core";
 
 const main=async ()=> {
@@ -13,7 +13,7 @@ const main=async ()=> {
     .catch((error) => console.log(error));
     const apolloServer=new ApolloServer({
       schema:await buildSchema({
-        resolvers:[HelloResolver],
+        resolvers:[FormBuilderResolver],
         validate:false
         
       }),
@@ -26,8 +26,6 @@ const main=async ()=> {
     apolloServer.applyMiddleware({ app });
     app.get("/", (_req, res) => res.send("Working"));
     const serverport=process.env.SERVER_PORT
-    app.listen(serverport, () => console.log(`server started on port ${serverport}`));
-
-    
+    app.listen(serverport, () => console.log(`server started on port ${serverport}`));    
   }
 main().catch((err)=>console.error(err));
