@@ -25,7 +25,7 @@ const main=async ()=> {
     const app=express();
     apolloServer.applyMiddleware({ app });
     app.get("/", (_req, res) => res.send("Working"));
-    const serverport=process.env.SERVER_PORT
+    const serverport=process.env.SERVER_PORT || 4000;
     app.listen(serverport, () => console.log(`server started on port ${serverport}`));    
   }
 main().catch((err)=>console.error(err));

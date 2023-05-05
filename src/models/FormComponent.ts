@@ -9,12 +9,12 @@ export class FormComponent {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field()
-  @Column()
+  @Field(()=>String)
+  @Column({ type: "varchar" })
   type: string;
 
-  @Field()
-  @Column()
+  @Field(()=>String)
+  @Column({ type: "varchar" })
   label: string;
 
   //other fields to be added

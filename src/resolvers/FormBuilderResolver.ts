@@ -4,9 +4,15 @@ import { Resolver, Query, Mutation, Arg } from 'type-graphql';
 import { FormBuilder } from '../models/FormBuilder';
 import { FormComponent } from '../models/FormComponent';
 import { getRepository } from 'typeorm';
+import { CreateFormBuilderInput } from '../inputs/FormBulderInput';
+import { CreateFormComponentInput } from '../inputs/FormComponentInput';
 
 @Resolver()
 export class FormBuilderResolver {
+
+  private formBuilderRepository = getRepository(FormBuilder);
+  private formComponentRepository = getRepository(FormComponent);
+
   @Query(() => [FormBuilder])
   async formBuilders(): Promise<FormBuilder[]> {
     const formBuilderRepository = getRepository(FormBuilder);
@@ -20,24 +26,23 @@ export class FormBuilderResolver {
   }
 
   @Mutation(() => FormBuilder)
-  async createFormBuilder(@Arg('name') name: string): Promise<FormBuilder> {
-    const formBuilderRepository = getRepository(FormBuilder);
-    const formBuilder = new FormBuilder();
-    formBuilder.name = name;
-    return formBuilderRepository.save(formBuilder);
+  async createFormBuilder(@Arg("data") data: CreateFormBuilderInput): Promise<FormBuilder> {
+    const formBuilder = this.formBuilderRepository.create(data);
+    return this.formBuilderRepository.save(formBuilder);
+
   }
 
   @Mutation(() => FormBuilder)
   async addComponentToFormBuilder(
-    @Arg('formBuilderId') formBuilderId: number,
-    @Arg('component') component: FormComponent,
+    @Arg("data") data: CreateFormComponentInput
   ): Promise<FormBuilder | undefined> {
-    const formBuilderRepository = getRepository(FormBuilder);
-    const formBuilder = await formBuilderRepository.findOne(formBuilderId, { relations: ['components'] });
+    const formBuilder = await this.formBuilderRepository.findOne(data.formBuilderId, { relations: ['components'] });
     if (!formBuilder) {
       return undefined;
     }
-    formBuilder.components.push(component);
-    return formBuilderRepository.save(formBuilder);
+  const formComponent = this.formComponentRepository.create(data);
+  formComponent.formBuilder = formBuilder;
+  formBuilder.components.push(formComponent);
+  return this.formBuilderRepository.save(formBuilder);
   }
 }
