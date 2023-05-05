@@ -2,9 +2,10 @@
   "type":"postgres",
   "database":"formbuilder-graphql-db",
   "entities":["src/models/**/*.ts"],
+  "createDatabaseIfNotExist": true,
   "logging":true,
   "synchronize":true,
   "username":"postgres",
-  "password":"admin",
+  "password":"password",
   "port":5432
 }
